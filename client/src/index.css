@@ -11,3 +11,18 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.main-title{
+  /* background-color: greenyellow; */
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  color: white;
+  text-shadow: 2px 2px black;
+  border-radius: 30px;
+  align-items: center;
+}
+
+.main-title>.title{
+  font-size: 2.4em;
+}

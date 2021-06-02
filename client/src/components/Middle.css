@@ -25,9 +25,12 @@
   font-size: 1em;
 }
 
-.row {
+.row,.middle-row {
   display: flex;
   flex-direction: row;
+}
+.middle-row{
+  justify-content: space-evenly;
 }
 
 .attacker-damage{
@@ -72,8 +75,11 @@
       text-align: center;
   }
 
-  .research-img>div:hover{
-    color:red;
-    animation: pulsate 2s 1;
+  .research-img>.can-change:hover{
+    color: green;
     cursor: pointer;
+  }
+
+  .research-img>.locked {
+    color: red
   }

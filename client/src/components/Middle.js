@@ -1,9 +1,10 @@
+import React from "react"
 import {Upgrade} from "./Upgrade"
 import {canAttackTargetDefender, Damage} from "./Attacker/Damage"
 import { UnitImg } from './UnitSelector/Unit'
 import {RandomButton} from "./UnitSelector/UnitSelector"
 import "./Middle.css"
-
+ 
 const animateValidAttacks = (cname, keep) => {
   Array.from(document.getElementsByClassName(cname)).forEach(elem => {
     if(keep){
@@ -35,7 +36,8 @@ const DPS = ({attacker, defender, aidx,  attackResearch, shieldsResearch, armorR
       if(attacker.attacks.map(attack => {
               return canAttackTargetDefender(attack, defender)
             }).filter(item => item).length > 0){
-              text = <span className={"pulse"}>⬅ Select a valid attack</span>
+              text = <span>⬅ Select a valid attack</span>
+              cns.push("pulse")
               animateValidAttacks("alt-weapon", true)
             }
       else{
@@ -46,6 +48,7 @@ const DPS = ({attacker, defender, aidx,  attackResearch, shieldsResearch, armorR
 
     } else {
       cns.push("waiting")
+      if (!attacker && !defender) {cns.push("pulse")}
       text= <div>
                  <div>Select: </div>
                 <div>{!attacker ? <div className={"attacker row"}><RandomButton display={units} randomize={() => setAttacker(units[Math.floor(Math.random()*units.length)])} randomText={"🎲  ⬅ Attacker"}/>  </div>: null}</div>
@@ -63,15 +66,11 @@ const DPS = ({attacker, defender, aidx,  attackResearch, shieldsResearch, armorR
   const updateHealth = () => {
     if(!attacker || !defender) return;
     let newValues = d.oneShot();
-    console.log('newValues', newValues)
     let newDefender = defender;
-    console.log('aidx', aidx)
     if(newValues && aidx !== undefined && aidx !== null){
-      console.log('staritng for loop')
       // for(var i = 0; i < attacker.attacks[aidx].repeats; i++){
         // console.log('looping', i)
         if(newValues.health > 0 || true){
-        console.log("updatinghealth")
           let newValues = d.oneShot();
           if(newValues){
             newDefender = {
@@ -83,7 +82,6 @@ const DPS = ({attacker, defender, aidx,  attackResearch, shieldsResearch, armorR
               }
             }
             }
-            console.log('newDefender', newDefender)
           d = new Damage(JSON.parse(JSON.stringify(attacker)),
           JSON.parse(JSON.stringify(newDefender)), aidx,
           [ attackResearch, shieldsResearch, armorResearch]
@@ -116,22 +114,50 @@ const Vitality = ({defender, units, setDefender}) => {
                           health > 2/7 ? "orange":
                                             "red";
 
+  const setAttribute = (val, attr) => {
+    const newBase = {...defender.base}
+    newBase[attr] = parseInt(val)
+    console.log('newBase', newBase)
+    setDefender({
+      ...defender,
+      base: {...newBase}
+    })
+  }
+
+  React.useEffect(() => {
+    // console.log('defender', defender.base)
+  }, [defender])
+
+  const UpdateAttr = ({ val, updater, attr, followup }) => {
+    const [holderValue, setHolderValue] = React.useState(val)
+    const [editing, setEditing] = React.useState(false)
+    const newStyle = editing? {justifyContent: "space-evenly"} : null;
+
+    return <div className={"row"} style={newStyle}>
+      {editing? <>
+        <input type={"text"} value={holderValue} onChange={(e) => setHolderValue(e.target.value)} style={{width: "50px"}}/>
+        <div onClick={() => {setEditing(false)  ; updater(holderValue, attr) }}>✅</div>
+        <div onClick={() => {setHolderValue(val); setEditing(false)}}>❌</div>
+        </>:
+      <div style={{textDecoration: "underline"}}onClick={() => setEditing(true)}>{holderValue}</div>  }
+      <div>&nbsp;{followup}</div>
+    </div>
+    } 
+
   return<>  {defender?
     <>
-      <div className={"vitality"}>
-        
+      <div className={"vitality"}>        
         <div className={"avatar"}>
           <UnitImg unit={defender} label={<div className={"vitality-stats"}>
           {baseShields ? <>
             <div className={"shields"}>
-              
-              <div>{defender.base.shields} / {baseShields}<>🧊</></div>
+              <div><UpdateAttr val={defender.base.shields} updater={setAttribute} attr={"shields"} followup={<> / {baseShields}🧊</>} /></div>
             </div>
-            
             </>: null}
             <div className={"health"}>
-              <div><span style={{color: healthColor}}>{defender.base.health} / {baseHealth} <>♥️</></span></div>
+              <div><span style={{color: healthColor}}>{<UpdateAttr val={defender.base.health} updater={setAttribute} attr={"health"} followup={<> / {baseHealth} ♥️</>}/>}</span></div>
             </div>
+            <div><UpdateAttr val={defender.base.armor} updater={setAttribute} attr={"armor"} followup={<> 🛡</>}/></div>
             <div style={{ textAlign:"right"}}>
           { (defender.base.health !== baseHealth || defender.base.shields !== baseShields) ? 
               <span onClick={() => setDefender(units?.find(unit => defender?.name === unit.name))}>Reset</span> : null}
@@ -165,18 +191,19 @@ const AllUpgrades = ({attacker, defender, aidx, attackResearch, setAttackResearc
 
         <div></div>
         <div>
-          {defender?.base.shields ?  <Upgrade researchKind={"shields"} updateResearch={setShieldsResearch} value={shieldsResearch} /> :null }
+          {defender?.base.shields >= 0 ?  <Upgrade researchKind={"shields"} updateResearch={setShieldsResearch} value={shieldsResearch} /> :null }
         </div>
         <div>{defender?.base.shields ?  <UnitImg unit={defender} label={<div className={"attacker-damage"}><div>{shieldsResearch}</div><div>🧊</div></div>} />: null}</div>
 
         <div></div>
           <div>{defender? <Upgrade researchKind={"armor"} updateResearch={setArmorResearch} value={armorResearch} /> : null }</div>
-        <div>{defender ? <UnitImg unit={defender} label={<div className={"attacker-damage"}><div>{defender.base.armor+armorResearch}</div><div>🛡</div></div>}/>: null}</div>
+        <div>{defender ? <UnitImg unit={defender} label={<div className={"attacker-damage"}><div>{defender.base.armor+defender.research.armor*armorResearch}</div><div>🛡</div></div>}/>: null}</div>
       </div> 
     </>
     }
 
-export const Middle = ({attacker, defender, aidx, research, setDefender, setAttacker, units}) => {
+
+export const Middle = ({attacker, defender, aidx, research, setDefender, setAttacker, units, large}) => {
 
   if(!research || !units){
     return units ?  "no rsearch":  "or no units";
@@ -187,8 +214,9 @@ export const Middle = ({attacker, defender, aidx, research, setDefender, setAtta
                           JSON.parse(JSON.stringify(defender)), aidx,
                           [ attackResearch, shieldsResearch, armorResearch]
                           )
-              
-    return <div className={"middle"}>
+    const cns = ["middle"]
+    if(!large) {cns.push("middle-row")}
+    return <div className={cns.join(" ")}>
               <div>
                 <DPS attacker={attacker} defender={defender} aidx={aidx}
                     attackResearch={attackResearch} armorResearch={armorResearch} shieldsResearch={shieldsResearch}

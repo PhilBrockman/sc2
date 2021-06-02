@@ -9,7 +9,14 @@ ReactDOM.render(
   
   <React.StrictMode>
     <div className="wrapper">
-      <h1>Application</h1>
+      <div className={"main-title"}>
+        <div className={"title"}>SC2 Melee</div>
+          <div>Purpose</div>
+          <div>contact</div>
+
+        
+      </div>
+      
       <BrowserRouter>
         <Switch>
           <Route path="/dash">

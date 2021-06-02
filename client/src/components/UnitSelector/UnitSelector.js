@@ -66,13 +66,9 @@ const ButtonGroup = ({unit, setUnit, randomizeUnit, display}) => {
 
 const showUnits = (subUnits, currentUnit, setUnit) => {
   const classes = ["unit-selection"]
-
-  console.log('currentUnit', currentUnit)
   return subUnits.map((unit,index) => {
     let tmpClasses = classes
-    if( currentUnit?.name === unit.name){
-      console.log('tmpClasses',unit.name, tmpClasses)
-      
+    if( currentUnit?.name === unit.name){      
       tmpClasses = [...classes, "active-unit"]
     } else {
       tmpClasses = classes
@@ -142,7 +138,7 @@ const FactionFlipper = ({ showFactions}) => {
 }
 
 export const UnitSelector = (props) => {
-  const [setUnit, currentUnit, units] = [props.setUnit, props.currentUnit, props.units]
+  const [setUnit, currentUnit, units, showTags] = [props.setUnit, props.currentUnit, props.units, props.showTags]
 
   const [tags, setTags] = React.useState([])
   const [showFactions, setShowFactions] = React.useState(false)
@@ -181,7 +177,7 @@ export const UnitSelector = (props) => {
     <div>
       <Unit unit={currentUnit} setUnit={setUnit}>
          <div className={"attributes"}>
-            {currentUnit?.types.map((( tag, index ) => {
+            {showTags && currentUnit?.types.map((( tag, index ) => {
                 return <Tag key={tag} tag={tag} toggle={toggleTagging} highlight={true}/>
               }))}
             </div>
@@ -225,7 +221,6 @@ export const UnitSelector = (props) => {
       </>
     }
   } else {
-    console.log('units from selector', units)
     return "Loading"
   }
   

@@ -6,22 +6,22 @@ export const useUnits = (checkAgain) => {
   const [response, setResponse] = React.useState(null)
   const [locked, setLocked] = React.useState(false)
 
-  const getUnits = async () =>{
-    if(locked) {return []}
-    console.log("FETCHING")
-      fetch('http://localhost:5000/api/units')
-        .then(res => res.json())
-        .then(res =>  {
-          setResponse(res.units)
-        })
-        .catch(err => {
-          console.error("error fetching", err)
-        })
-  }
   React.useEffect(() => {
     setLocked(true)
+    const getUnits = async () =>{
+      if(locked) {return []}
+        fetch('http://localhost:5000/api/units')
+          .then(res => res.json())
+          .then(res =>  {
+            setResponse(res.units)
+          })
+          .catch(err => {
+            console.error("error fetching", err)
+          })
+    }
+
     getUnits()
-  }, [])
+  }, [locked])
 
   return [locked, response]
 }

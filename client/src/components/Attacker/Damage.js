@@ -148,7 +148,7 @@ oneShot = (faked=true) => {
   }
 
   let results = null
-  let log;
+  let log
 
   if(att?.attacks[this.attackIndex] === undefined || !def){
     return "👀 no attacker or attack not found"
@@ -181,7 +181,7 @@ oneShot = (faked=true) => {
         const overkill = (100*-def.base.health/damageSum).toFixed(1)
         log += ` (${overkill}% attack wasted)`
       }
-      results = ({health: def.base.health, shields: def.base.shields, totalDamage: damageSum})
+      results = ({health: def.base.health, shields: def.base.shields, totalDamage: damageSum, log: log})
     }
   }
 

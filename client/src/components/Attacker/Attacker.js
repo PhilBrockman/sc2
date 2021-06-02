@@ -1,11 +1,7 @@
 import React from 'react'
-import {Unit, UnitImg} from "../UnitSelector/Unit"
 import { UnitSelector } from '../UnitSelector/UnitSelector'
 import {groundAirTargetingValidation, canAttackTargetDefender} from "./Damage"
 import "./Attacker.css"
-
-
-const DEFENDER_DEAD = "defender is dead"
 
 const Bonus = ({attack, defender, textstyle}) => {
 

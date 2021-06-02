@@ -1,16 +1,17 @@
+body{
+  background-color: grey;
+}
+
 .arena {
   display: flex;
+}
+.middle, .attacker, .defender{
+  padding: 10px;
 }
 
 .container {
   flex: 1;
   padding: 10px;
-}
-.container img{
-  width: 40%;
-}
-.unit {
-  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
 }
 .column {
   display: flex;
@@ -107,6 +108,12 @@ h1, .attack-name {
 .active{
   background-color: #4CAF50;
 }
+.active:hover {
+  background-color: #4caf4f94 ; 
+}
+.active:active{
+  color:#4caf4fFF;
+}
 .inactive{
   background-color: #acca74;
   color: black;
@@ -150,6 +157,10 @@ span.damage {
   min-height: 150px;  
   background-color:  rgba(178, 69, 178, 0.464);
   margin-left: 5em;
+}
+
+.unit-selection:hover{
+  background-color: gray;
 }
 
 .active-unit {
