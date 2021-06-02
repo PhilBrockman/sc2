@@ -13,16 +13,16 @@ const Bonus = ({attack, defender, textstyle}) => {
     if(!defender){
       modifier = <span>{bonusText}</span>
     } else {
-      const overlap = groundAirTargetingValidation(attack, defender);
-      if (overlap.length === 0){
-        modifier = <span> {bonusText} </span>
-      }else{
+      // const overlap = false;//groundAirTargetingValidation(attack, defender);
+      // if (overlap.length === 0){
+      //   modifier = <span> {bonusText} </span>
+      // }else{
         if (defender.types.includes(bonus.to) ){
           modifier=  <span>{bonusText} 🎯</span>
         } else {
           modifier= <span style={{textDecoration: "wavy line-through red"}}>{ bonusText}</span>
         }
-      }
+      // }
     }
 
     return <div key={index}>
@@ -64,6 +64,8 @@ const Attacks = ({unit, defender, defaultIndex, setDefaultIndex}) => {
     const attacks = ["attack-name"]
     attacks.push(available? "alt-weapon": "unavailable")
     attacks.push(available && (defaultIndex === null) ? "pulse": "")
+    console.log('attacks', attacks)
+    console.log('defaultIndex', defaultIndex)
 
     return <div key={index} onClick={() => toggleIndex(index)} className={cns.join(" ")}>
       <>

@@ -30,6 +30,7 @@ function App() {
   }
 
   const [attackIndex, setAttackIndex] = React.useState(null)
+  const [autoSelected, setAutoSelected] = React.useState(false)
 
   const [locked, loadingUnits] = useUnits()
   const [units, setUnits] = React.useState(null)
@@ -58,23 +59,28 @@ function App() {
   }, [locked, loadingUnits])
 
   React.useEffect(() => {
+    setAttackIndex(null)
+    setAutoSelected(false)
+  }, [attacker, setAttackIndex])
+
+  React.useEffect(() => {
     const selectAttack = (att) => {
       if(units){
         if(attackIndex) {
-          setAttackResearch(null);
+          // setAtta(null);
         } else {
-          if(canAttackTargetDefender(attacker?.attacks[attackIndex], defender)) {return; }
+          // if(canAttackTargetDefender(attacker?.attacks[attackIndex], defender)) {return; }
           const validAttack = attacker?.attacks?.filter(attack => canAttackTargetDefender(attack, defender))
-          if(!validAttack || validAttack.length === 0 || validAttack.length > 1){
-            setAttackIndex(null)
-            } else {
-              setAttackIndex(attacker.attacks.indexOf(validAttack[0]))
-            }
-            }
+          if(!autoSelected) {
+            console.log("setting attack")
+            setAttackIndex(attacker?.attacks.indexOf(validAttack[0]))
+            setAutoSelected(true)
+          } 
+          }
         }
     }
     selectAttack(attacker)
-  }, [attacker, defender, attackIndex, units])
+  }, [attacker, defender, attackIndex, units, autoSelected])
 
   const large = width > 950;
 
