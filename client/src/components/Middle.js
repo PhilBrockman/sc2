@@ -101,7 +101,7 @@ const DPS = ({attacker, defender, aidx,  attackResearch, shieldsResearch, armorR
   return <div className={"DPS"}>
             <div><span className={cns.join(" ")} onClick={() => updateHealth()}>{text}</span></div>
             {doubleReroll ? <>
-              <div className={"defender"}><RandomButton display={units} position={setDefender} randomize={() => {setDefender(units[Math.floor(Math.random()*units.length)]); setAttacker(units[Math.floor(Math.random()*units.length)])}} randomText={"Reroll 🎲 Units"}/></div>
+              <div className={"button"}><RandomButton display={units} position={setDefender} randomize={() => {setDefender(units[Math.floor(Math.random()*units.length)]); setAttacker(units[Math.floor(Math.random()*units.length)])}} randomText={"Reroll 🎲 Units"}/></div>
             </> : null}
         </div>
 }

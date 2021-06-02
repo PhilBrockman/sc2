@@ -1,5 +1,6 @@
 .attacks h1{
 background-color: rgba(243, 236, 110, 0.581) ;
-text-shadow: none;
-text-emphasis: bold;
+/* text-shadow: none; */
+/* text-emphasis: bold; */
+font-weight: bold;
 }

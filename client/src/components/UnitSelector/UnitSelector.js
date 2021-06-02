@@ -53,7 +53,7 @@ export const RandomButton = ({display, randomize, randomText }) => {
 
 const ResetButton = ({unit, setUnit}) => {
 return <div className={"reset-button"} onClick={() => setUnit(null)}>
-        💣 Clear Unit
+        ↻
       </div>
 }
 
@@ -67,10 +67,12 @@ const ButtonGroup = ({unit, setUnit, randomizeUnit, display}) => {
 const showUnits = (subUnits, currentUnit, setUnit) => {
   const classes = ["unit-selection"]
 
-  // activeUnit = ? "#367180": "#";
+  console.log('currentUnit', currentUnit)
   return subUnits.map((unit,index) => {
     let tmpClasses = classes
     if( currentUnit?.name === unit.name){
+      console.log('tmpClasses',unit.name, tmpClasses)
+      
       tmpClasses = [...classes, "active-unit"]
     } else {
       tmpClasses = classes
@@ -85,12 +87,12 @@ const showUnits = (subUnits, currentUnit, setUnit) => {
   })
 }
 
-const Production = ({structure, path, units, currentUnit, setUnit}) => {
+const Production = ({structure, path, units, unit, setUnit}) => {
   const [hidden, setHidden] = React.useState(true)
   const subUnits = units ? units.filter(unit => unit.structure === structure) : null;
 
   let display = hidden? <></> :
-    <div className={"units-selector"}>{showUnits(subUnits, currentUnit, setUnit)}</div>;
+    <div className={"units-selector"}>{showUnits(subUnits, unit, setUnit)}</div>;
 
   if(!units) return null;
 
@@ -172,7 +174,10 @@ export const UnitSelector = (props) => {
 
   const inputArea = <div>
     <div className={"input-area"}>{inputText} <ButtonGroup display={units} unit={currentUnit} setUnit={setUnit} randomizeUnit={randomizeUnit}/></div>
-    <div className={"row search-by-tag"}>{tags.map(tag => <Tag key={tag} tag={tag} toggle={toggleTagging} />)}</div>
+    <div className={"row search-by-tag"}>
+      {tags.map(tag => <Tag key={tag} tag={tag} toggle={toggleTagging} />)}
+      {tags.length > 0 ? <h1 className={"clear-tags"} onClick={() => setTags([])}>🚫</h1> : null}
+      </div>
     <div>
       <Unit unit={currentUnit} setUnit={setUnit}>
          <div className={"attributes"}>
@@ -200,7 +205,8 @@ export const UnitSelector = (props) => {
       }).filter(unit => unit.name.toLowerCase().includes(searchText.toLowerCase()))
       return <>
       <>{inputArea}</>
-        {showUnits(subUnits, currentUnit, setUnit).length >0 ? showUnits(subUnits, currentUnit, setUnit) : <></>}
+        
+        {showUnits(subUnits, currentUnit, setUnit).length >0 ? <><h1 style={{fontSize: "2em"}}>Filtered Results:</h1>{showUnits(subUnits, currentUnit, setUnit)} </>: <></>}
         {reset}
       </>
     } else {

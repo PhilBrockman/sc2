@@ -63,17 +63,13 @@
 
   .eliminator{
       border: none;
-      color: white;
-      text-shadow: 1px 1px black;
       cursor: default;
-
-      display: flex;
       border-radius: 40px;
-      padding:10px;
-      margin: 5px;
-      justify-content: space-around;
-      background-color: rgb(152, 210, 148);
+      margin: 0 100px 0 100px;
+      padding: 10px;
+      background-color: rgb(198, 166, 255);
       border:seagreen 2px solid;
+      text-align: center;
   }
 
   .research-img>div:hover{
