@@ -1,0 +1,195 @@
+.arena {
+  display: flex;
+}
+
+.container {
+  flex: 1;
+  padding: 10px;
+}
+.container img{
+  width: 40%;
+}
+.unit {
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+}
+.column {
+  display: flex;
+  flex-direction: column;
+}
+.column>div{
+  text-align: center;
+}
+
+.upgrades {
+  display: flex;
+  justify-content: space-evenly;
+  flex-direction: row;
+  align-items: center;
+}
+
+.main-weapon {
+  /* background-color: rgba(5, 70, 108, 0.642); 
+  color:white; */
+  background-color: rgb(0, 83, 108);
+}
+
+.other-choice {
+  background-color:#6ce2ff;
+  opacity: .7;
+}
+.unavailable{
+  background-color: rgba(249, 123, 77, 0.615);
+}
+
+.unit-profile{
+  display: flex;
+  flex-direction: row;
+}
+
+.faction {
+  display:flex;
+  flex-direction: column;
+  background-color: rgba(130, 121, 255, 0.272);
+}
+
+.units-selector{
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+h1, .attack-name {
+  margin: 0;
+  padding: 5px;
+  font-size: 1.2em;
+  color: white;
+  text-shadow: 3px 3px black;
+  position: relative;
+  z-index: 1;
+}
+
+.attack-name {
+  text-shadow: 2px 2px black;
+}
+
+.button {
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-shadow: 2px 2px black;
+  display: inline-block;
+  font-size: 1.5em;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+.DPS {
+  text-align: center;
+}
+
+.button{
+  display: flex;
+  border-radius: 40px;
+  padding:10px;
+  margin: 5px;
+  justify-content: center;
+  background-color: rgba(196, 246, 193, 0.471);
+  border:seagreen 2px solid;
+}
+
+.attacker{
+  background-color: #fca7ff;
+}
+
+.defender{
+  background-color: #8be5da;
+}
+
+.active{
+  background-color: #4CAF50;
+}
+.inactive{
+  background-color: #acca74;
+  color: black;
+  text-shadow: 2px 2px white;
+}
+.invalid{
+  background-color: rgb(255, 149, 43);;
+}
+.waiting {
+  background-color: #69a2ff57;
+}
+
+.unit-card > .unit-name {
+  margin: 0;
+  padding: 5px;
+  font-size: 1.5em;
+  color:white;
+  text-shadow: 3px 3px black;
+  text-emphasis: bold;
+}
+
+span.damage {
+  color: red;
+}
+
+.unit-stats {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  /* font-size: 1.em; */
+}
+
+.unit-stats-item {
+  /* grid-template-columns:  */
+}
+
+
+.unit-selection{
+  position: relative;
+  margin-left: 20px;
+  min-height: 150px;  
+  background-color:  rgba(178, 69, 178, 0.464);
+  margin-left: 5em;
+}
+
+.active-unit {
+  background-color: green;   
+}
+
+.production-facility {
+  margin-left: 3em;
+  background-color:rgba(152, 78, 152, 0.327);
+  min-height: 150px;
+}
+
+.bullet {
+  animation-name: color;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+@keyframes color {
+  0% {
+    color: white;
+  }
+  60% {
+    color: red;
+  }
+  100% {
+    color: white;
+  }
+}
+
+.success{
+  margin: 0;
+  padding: 5px;
+  font-size: 1.5em;
+  color:white;
+  text-shadow: 3px 3px black;
+  text-emphasis: bold;
+}
+
+.fail {
+  color: red
+}

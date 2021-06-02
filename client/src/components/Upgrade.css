@@ -1,0 +1,17 @@
+.incrementer {
+}
+
+.incrementer>.research-img{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+.incrementer>div{
+  display: flex;
+  color:white;
+  text-shadow: 2px 2px  black;
+  font-size: 1.4em;
+  font-weight: bold;	
+}
+

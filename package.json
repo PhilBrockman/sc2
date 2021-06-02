@@ -1,0 +1,21 @@
+{
+  "name": "sc2-melee",
+  "version": "1.0.0",
+  "scripts": {
+    "client": "cd client && yarn start",
+    "server": "nodemon server.js",
+    "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\""
+  },
+  "dependencies": {
+    "@userfront/react": "^0.1.26",
+    "body-parser": "^1.18.3",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "mongodb": "^3.6.9",
+    "react-router-dom": "^5.2.0",
+    "react-use-promise": "^0.3.1"
+  },
+  "devDependencies": {
+    "concurrently": "^4.0.1"
+  }
+}

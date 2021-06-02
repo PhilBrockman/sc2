@@ -1,0 +1,83 @@
+.middle {
+  background-color: rgba(243, 236, 110, 0.581);
+}
+
+.vitality {
+  display: flex;
+}
+.avatar{
+  flex-grow:7;
+  min-height: 150px;
+}
+
+.reset-button {
+  height: 50px;
+}
+
+.vitality-stats {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.vitality-stats>.shields, .vitality-stats>.health{
+  font-size: 1em;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+}
+
+.attacker-damage{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.shields {
+  color:royalblue
+}
+
+.pulse{
+ transform: scale(1);
+	animation: pulse 2s infinite;
+}
+  @keyframes pulse {
+    0% {
+      transform: scale(0.95);
+      box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.7);
+    }
+  
+    70% {
+      transform: scale(1);
+      box-shadow: 0 0 0 10px rgba(0, 0, 0, 0);
+    }
+  
+    100% {
+      transform: scale(0.95);
+      box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+    }
+  }
+
+  .eliminator{
+      border: none;
+      color: white;
+      text-shadow: 1px 1px black;
+      cursor: default;
+
+      display: flex;
+      border-radius: 40px;
+      padding:10px;
+      margin: 5px;
+      justify-content: space-around;
+      background-color: rgb(152, 210, 148);
+      border:seagreen 2px solid;
+  }
+
+  .research-img>div:hover{
+    color:red;
+    animation: pulsate 2s 1;
+    cursor: pointer;
+  }

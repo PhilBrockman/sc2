@@ -1,0 +1,21 @@
+.attributes {
+  display: flex;
+  flex-direction: column;
+}
+
+.attribute {
+  background-color: red;
+}
+
+.unit-img{
+  height:100%
+}
+
+.unit-img-label{
+  text-shadow: 2px 2px black;
+  font-size: 1.8em;
+  text-emphasis: bold;
+  justify-content: center;
+  opacity: .8;
+  align-items: center;
+}
