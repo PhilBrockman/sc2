@@ -47,6 +47,7 @@ const DPS = ({attacker, defender,  attackResearch, shieldsResearch, armorResearc
       }
     }else {
       text=<>{attacker.weapon.name} cannot target {defender.name}</>
+      cns.push("inactive")
     }
   } else {
     if (attacker && defender) {
