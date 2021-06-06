@@ -26,3 +26,8 @@ code {
 .main-title>.title{
   font-size: 2.4em;
 }
+
+a {
+  color:white;
+  text-decoration: none;
+}

@@ -3,6 +3,12 @@ const bodyParser = require('body-parser');
 const { MongoClient } = require("mongodb");
 
 const app = express();
+console.log('process.env.NODE_ENV', process.env.NODE_ENV)
+if(process.env?.NODE_ENV === "production"){
+  app.get('/*', function (req, res) {
+    res.sendFile(path.join(__dirname, 'build', 'index.html'));
+  });
+}
 const cors = require('cors');
 const port = process.env.PORT || 5000;
 app.use(cors());
@@ -14,6 +20,9 @@ let password = "6zKh2lsl43cTmJie"
 let db = "testCollections"
 
 const url = "mongodb+srv://applicant:"+password+"@project0cluster.eexyt.mongodb.net/"+db+"?retryWrites=true&w=majority&useNewUrlParser=true&useUnifiedTopology=true"   
+
+const path = require('path');
+
 
 MongoClient.connect(url)
   .then((client) => {
