@@ -1,7 +1,6 @@
 import React from 'react';
 import './App.css';
 import {Attacker} from "./components/Attacker/Attacker"
-import {canAttackTargetDefender} from "./components/Attacker/Damage"
 import {Defender} from "./components/Defender"
 import {Middle} from   "./components/Middle"
 import {useUnits} from "./components/UnitSelector/Unit"
@@ -74,13 +73,10 @@ function App() {
     const selectAttack = (att) => {
       if(units){
         if(!attacker) {
-          // setAtta(null);
+          setAutoSelected(false)
         } else {
-          // if(canAttackTargetDefender(attacker?.attacks[attackIndex], defender)) {return; }
-          const validAttack = attacker?.attacks?.filter(attack => canAttackTargetDefender(attack, defender))
           if(!autoSelected) {
             console.log("setting attack")
-            // setAttackIndex(attacker?.attacks.indexOf(validAttack[0]))
             setAutoSelected(true)
           } 
           }

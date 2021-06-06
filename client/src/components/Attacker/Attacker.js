@@ -1,6 +1,6 @@
 import React from 'react'
 import { UnitSelector } from '../UnitSelector/UnitSelector'
-import {groundAirTargetingValidation, canAttackTargetDefender} from "./Damage"
+import {canAttackTargetDefender} from "./Damage"
 import "./Attacker.css"
 
 class AttackerErrorBoundary extends React.Component {
@@ -81,34 +81,35 @@ const Bullet = ({animate, display}) => {
   }
 }
 
-const WeaponDisplay = ({available, selected, classes}) => {
-  return <>"weapon"</>
-  // const cns = []
-  // cns.push(index === attacker.weapon ? "main-weapon" : "other-choice");
-  // cns.push(available ? "attack-available" : "attack-unavailable");
-  // const attacks = ["attack-name"]
-  // attacks.push(available? "alt-weapon": "unavailable")
-  // attacks.push(available && (defaultIndex === null) ? "pulse": "")
-  // console.log('attacks', attacks)
-  // console.log('defaultIndex', defaultIndex)
-  // return <div key={index} onClick={() => toggleIndex(index)} className={cns.join(" ")}>
-  //   <>
-  //     <div className={classes.join(" ")} >
-  //       <Bullet animate={available && (defaultIndex === null)} display={(true)}/>
-  //           {attack.name} {attack.repeats > 1 ? <>(x {attack.repeats})</>: null}
-  //     {index === defaultIndex ?
-  //       <div>
-  //         <>Base Damage: <span className={cn}>{attack.baseDamage} (+{attack.researchBonus})</span></>
-  //         <Bonus attack={attack} defender={defender} textstyle={cn}/>
-  //       </div>
-  //       : null
-  //       }
-  //       </div>
-  //   </>
-  // </div>
-}
+// const WeaponDisplay = ({available, selected, classes}) => {
+//   return <>"weapon"</>
+//   // const cns = []
+//   // cns.push(index === attacker.weapon ? "main-weapon" : "other-choice");
+//   // cns.push(available ? "attack-available" : "attack-unavailable");
+//   // const attacks = ["attack-name"]
+//   // attacks.push(available? "alt-weapon": "unavailable")
+//   // attacks.push(available && (defaultIndex === null) ? "pulse": "")
+//   // console.log('attacks', attacks)
+//   // console.log('defaultIndex', defaultIndex)
+//   // return <div key={index} onClick={() => toggleIndex(index)} className={cns.join(" ")}>
+//   //   <>
+//   //     <div className={classes.join(" ")} >
+//   //       <Bullet animate={available && (defaultIndex === null)} display={(true)}/>
+//   //           {attack.name} {attack.repeats > 1 ? <>(x {attack.repeats})</>: null}
+//   //     {index === defaultIndex ?
+//   //       <div>
+//   //         <>Base Damage: <span className={cn}>{attack.baseDamage} (+{attack.researchBonus})</span></>
+//   //         <Bonus attack={attack} defender={defender} textstyle={cn}/>
+//   //       </div>
+//   //       : null
+//   //       }
+//   //       </div>
+//   //   </>
+//   // </div>
+// }
 
 const Attacks = ({attacker, defender, setAttackingWeapon}) => {
+  if(!attacker) return null;
   const Attack = ({attack, available, selected}) => {
     const cns = []
     cns.push(attacker?.weapon?.name === attack?.name ? "main-weapon" : "other-choice");
@@ -117,7 +118,7 @@ const Attacks = ({attacker, defender, setAttackingWeapon}) => {
     attacks.push(available? "alt-weapon": "unavailable")
     attacks.push(available && (!attacker.weapon ? "pulse": ""))
     console.log('attacks', attacks)
-    return <div key={attack.name} onClick={() => setAttackingWeapon(attack)} className={cns.join(" ")}>
+    return <div onClick={() => setAttackingWeapon(attack)} className={cns.join(" ")}>
       <>
         <div className={attacks.join(" ")} >
           <Bullet animate={attacks.includes("pulse")} display={(true)}/>
@@ -133,29 +134,19 @@ const Attacks = ({attacker, defender, setAttackingWeapon}) => {
       </>
     </div>
   }
-  // return "attxs"+JSON.stringify(attacks.l)
-//   return attacker?.attacks.map(attack => {
-//     return <>
-//     <Attack attack={attack}/></>
-//   }) 
-// // if (!attacks ) {return " no attacker"}
-  // return "Attacks"
-  const toggleWeapon= (index) => {
-      // if(index === defaultIndex){
-      //   setAttackingWeapon(null)
-      // } else {
-      //   setAttackingWeapon(index)
-      // }
-    }
+
   const attackMap =  attacker?.attacks.map((attack) => {
-    return <Attack attack={attack } available={canAttackTargetDefender(attack, defender)}
-                           selected={attack === attacker.weapon} />
+    const available = canAttackTargetDefender(attack, defender)
+    return <div key={attack.name}><Attack attack={attack} available={available}
+                           selected={attack === attacker.weapon} /></div>
     
   
   })
 
   return <div className={"attacks"}>
-    <h1>{attacker?.attacks.length > 0 ? Attacks : "pacifist"}</h1>
+    <h1>{
+
+    attacker.attacks.length > 0 ? "Attacks" : "Pacifist"}</h1>
       {attacker? attackMap : null} 
   </div>
 }
@@ -163,7 +154,7 @@ const Attacks = ({attacker, defender, setAttackingWeapon}) => {
 export const Attacker = ({attacker, defender, setAttacker, units}) => {
 
   const setAttackingWeapon = (weapon) => {
-  if(weapon != attacker.weapon){
+  if(weapon !== attacker.weapon){
       setAttacker({
         ...attacker,
         weapon: weapon
@@ -178,12 +169,9 @@ export const Attacker = ({attacker, defender, setAttacker, units}) => {
   }
   return <AttackerErrorBoundary>
   <UnitSelector setUnit={setAttacker} currentUnit={attacker} units={units}> 
-  {attacker?.attacks.length > 0 ? 
       <Attacks attacker={attacker} 
-      setAttackingWeapon={setAttackingWeapon} defender={defender} />:
-        attacker ?
-          <>pacifist</>  :
-          "nonthing selected"}
+      setAttackingWeapon={setAttackingWeapon} 
+      defender={defender} /> 
   </UnitSelector>
   </AttackerErrorBoundary>
 }

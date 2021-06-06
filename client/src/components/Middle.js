@@ -29,7 +29,7 @@ const validAttackExists = (attacker, defender) => {
 
 const DPS = ({attacker, defender,  attackResearch, shieldsResearch, armorResearch, setDefender, setAttacker, units}) => {
   let d = new Damage(attacker, defender, [ attackResearch, shieldsResearch, armorResearch])
-  const active = attacker?.weapon
+  const active = attacker?.weapon && defender
   const cns = ["button"];
 
   
@@ -38,11 +38,15 @@ const DPS = ({attacker, defender,  attackResearch, shieldsResearch, armorResearc
   if(active){
     cns.push("active")
     animateValidAttacks("alt-weapon", false)
-    if(d.oneShot()){
-      console.log("oneshot", d.oneShot())
-      text = <div style={{display: "flex", flexDirection:"column"}}><div style={{fontSize:"1.5em"}}>Damage:</div> <div>⚔️ {d.oneShot().totalDamage} 🛡</div></div>
-    } else {
-      text = <>Victory (reset)</>
+    if(canAttackTargetDefender(attacker.weapon, defender)){
+      if(d?.oneShot()){
+        console.log("oneshot", d.oneShot())
+        text = <div style={{display: "flex", flexDirection:"column"}}><div style={{fontSize:"1.5em"}}>Damage:</div> <div>⚔️ {d.oneShot().totalDamage} 🛡</div></div>
+      } else {
+        text = <>Victory (reset)</>
+      }
+    }else {
+      text=<>{attacker.weapon.name} cannot target {defender.name}</>
     }
   } else {
     if (attacker && defender) {
@@ -119,7 +123,9 @@ const DPS = ({attacker, defender,  attackResearch, shieldsResearch, armorResearc
           })
           }
           else {
-            updateHealth()
+            if(canAttackTargetDefender(attacker.weapon, defender)){
+              updateHealth()
+              }
           }
       } else {
         console.log("no attack exists")

@@ -10,7 +10,7 @@ ReactDOM.render(
   <React.StrictMode>
     <div className="wrapper">
       <div className={"main-title"}>
-        <div className={"title"}>SC2 Melee</div>
+        <div className={"title"}>SC2 Monobattle Calculator</div>
           <div>Purpose</div>
           <div>contact</div>
 
