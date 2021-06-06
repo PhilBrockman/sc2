@@ -1,6 +1,9 @@
 {
   "name": "sc2-melee",
   "version": "1.0.0",
+  "engines": {
+    "yarn": "1.22.10"
+  },
   "scripts": {
     "client": "cd client && yarn start",
     "server": "nodemon server.js",
