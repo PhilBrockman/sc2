@@ -2,12 +2,13 @@
   "name": "sc2",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://philbrockman.github.io/sc2/",
+  "homepage": "https://sc2.philbrockman.com/",
   "dependencies": {
     "@reduxjs/toolkit": "^1.5.1",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
+    "gh-pages": "^3.2.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-redux": "^7.2.3",
@@ -15,6 +16,8 @@
     "react-spring": "^9.2.1"
   },
   "scripts": {
+    "predeploy": "yarn build",
+    "deploy": "gh-pages -b main -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
