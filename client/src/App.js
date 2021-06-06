@@ -29,7 +29,6 @@ function App() {
     }
   }
 
-  const [attackIndex, setAttackIndex] = React.useState(null)
   const [autoSelected, setAutoSelected] = React.useState(false)
 
   const [locked, loadingUnits] = useUnits()
@@ -40,6 +39,10 @@ function App() {
 
   const [width, setWindowWidth] = React.useState(0)
    React.useEffect(() => { 
+    const updateDimensions = () => {
+      const width = window.innerWidth
+      setWindowWidth(width)
+    }
 
      updateDimensions();
 
@@ -47,10 +50,7 @@ function App() {
      return () => 
        window.removeEventListener("resize",updateDimensions);
     }, [])
-    const updateDimensions = () => {
-      const width = window.innerWidth
-      setWindowWidth(width)
-    }
+    
 
   React.useEffect(() => {
     if(locked){
@@ -58,29 +58,36 @@ function App() {
     }
   }, [locked, loadingUnits])
 
+
+  const equipWeapon = (attack) => {
+    setAttacker({
+      ...attacker,
+      weapon: attack
+    })
+  }
+
   React.useEffect(() => {
-    setAttackIndex(null)
     setAutoSelected(false)
-  }, [attacker, setAttackIndex])
+  }, [attacker])
 
   React.useEffect(() => {
     const selectAttack = (att) => {
       if(units){
-        if(attackIndex) {
+        if(!attacker) {
           // setAtta(null);
         } else {
           // if(canAttackTargetDefender(attacker?.attacks[attackIndex], defender)) {return; }
           const validAttack = attacker?.attacks?.filter(attack => canAttackTargetDefender(attack, defender))
           if(!autoSelected) {
             console.log("setting attack")
-            setAttackIndex(attacker?.attacks.indexOf(validAttack[0]))
+            // setAttackIndex(attacker?.attacks.indexOf(validAttack[0]))
             setAutoSelected(true)
           } 
           }
         }
     }
     selectAttack(attacker)
-  }, [attacker, defender, attackIndex, units, autoSelected])
+  }, [attacker, defender, units, autoSelected])
 
   const large = width > 950;
 
@@ -88,12 +95,11 @@ function App() {
                   <div className={"attacker"}>
                   <h1 style={{fontSize: "1.7em", textAlign:"center"}}>Attacker</h1>
                   <Attacker
-                    unit={attacker}
+                    attacker={attacker}
                     defender={defender}
-                    attackIndex={attackIndex}
-                    setAttackIndex={setAttackIndex}
-                    setUnit={setAttacker}
+                    setAttacker={setAttacker}
                     units={units}
+                    equipWeapon={equipWeapon}
                     />
                     </div>
                 </div>;
@@ -102,10 +108,10 @@ function App() {
                   <Middle
                     attacker={attacker}
                     defender={defender}
-                    aidx={attackIndex}
                     research={[attackResearch, setAttackResearch, shieldsResearch, setShieldsResearch, armorResearch, setArmorResearch]}
                     setDefender={setDefender}
                     setAttacker={setAttacker}
+                    equipWeapon={equipWeapon}
                     units={units}
                     large ={large}
                   /></div>;

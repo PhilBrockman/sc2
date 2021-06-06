@@ -21,7 +21,7 @@ export const canAttackTargetDefender = (attack, defender) => {
 // d = Damage(unit, defender, attack, attackResearch, armorResearch, shieldsResearch)
 // Damage.oneStep(unit, defender)
 export class Damage{
-  constructor( attacker, defender, attackIndex, research, guardian=0) {
+  constructor( attacker, defender, research, guardian=0) {
     if(!attacker || !defender){return null}
 
   const [attackResearch, shieldsResearch, armorResearch] = research
@@ -33,7 +33,6 @@ export class Damage{
 
   this.att = JSON.parse(JSON.stringify(attacker));
   this.def = JSON.parse(JSON.stringify(defender));
-  this.attackIndex = attackIndex
 
   let Spell = 1
   let Hallucinated = 1
@@ -42,13 +41,13 @@ export class Damage{
   let Prismatic = 1
 
   this.bonusDamage = () => {
-    return this.att.attacks[this.attackIndex].bonuses.filter(bonus => this.def.types.includes(bonus.to)).reduce((total, amount) => {
+    return this.att.weapon.bonuses.filter(bonus => this.def.types.includes(bonus.to)).reduce((total, amount) => {
       return total+amount.baseDamage+amount.researchBonus*this.research.attack
     }, 0)
   }
 
   this.damageDealt = () => {
-    const attack = this.att?.attacks[this.attackIndex]
+    const attack = this.att?.weapon
     if(this.att && this.def && attack){
       return (
         attack.baseDamage +
@@ -127,7 +126,7 @@ eliminate = () => {
           }
         }
         const d =  new Damage(this.att,
-          JSON.parse(JSON.stringify(defender)), this.attackIndex, 
+          JSON.parse(JSON.stringify(defender)), 
           [ this.research.attack, this.research.shields, this.research.armor])
         newValues= d.oneShot()
       }
@@ -150,17 +149,18 @@ oneShot = (faked=true) => {
   let results = null
   let log
 
-  if(att?.attacks[this.attackIndex] === undefined || !def){
+  if(att.weapon === undefined || !def){
     return "👀 no attacker or attack not found"
-  } if(!canAttackTargetDefender(att.attacks[this.attackIndex], def)){
+  } if(!canAttackTargetDefender(att.weapon, def)){
     return "can't shoot"
   }
   if(def.base.health > 0){
     let damageSum=0;
 
-    for(var i = 0; i < att.attacks[this.attackIndex].repeats; i++){
+    for(var i = 0; i < att.weapon.repeats; i++){
+      console.log("repaeting attack", att.weapon)
       const d =  new Damage(att,
-        JSON.parse(JSON.stringify(def)), this.attackIndex, 
+        JSON.parse(JSON.stringify(def)),
         [ this.research.attack, this.research.shields, this.research.armor])
       let damage = d.totalDamage();
       if(def.base?.shields > 0){
@@ -184,7 +184,7 @@ oneShot = (faked=true) => {
       results = ({health: def.base.health, shields: def.base.shields, totalDamage: damageSum, log: log})
     }
   }
-
+  console.log("results", results)
   return results
 }
 }

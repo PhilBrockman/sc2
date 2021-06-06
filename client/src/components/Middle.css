@@ -83,3 +83,22 @@
   .research-img>.locked {
     color: red
   }
+
+  .amiddle{
+    position: relative;
+}
+
+  .astyle {
+    content: "";
+    position: absolute;
+    width: 100%;
+    background-color: #FFF;
+    visibility: hidden;
+    transform: scaleX(0);
+    transition: all 0.3s ease-in-out;
+  }
+
+  .amiddle:hover:after {
+    visibility: visible;
+    transform: scaleX(1);
+  }
