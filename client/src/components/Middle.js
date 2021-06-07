@@ -252,7 +252,7 @@ const AllUpgrades = ({attacker, defender, attackResearch, setAttackResearch, shi
 export const Middle = ({attacker, defender, research, setDefender, setAttacker, units, large}) => {
 
   if(!research || !units){
-    return units ?  "no rsearch":  "or no units";
+    return units ?  "no research (error)":  "Note: Heroku Dynos are spinning up... Sorry for the inconevience. Please wait!";
   } else {
     const [attackResearch, setAttackResearch, shieldsResearch, setShieldsResearch, armorResearch, setArmorResearch] = research
     

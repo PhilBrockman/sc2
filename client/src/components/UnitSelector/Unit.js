@@ -6,13 +6,16 @@ export const useUnits = (checkAgain) => {
   const [response, setResponse] = React.useState(null)
   const [locked, setLocked] = React.useState(false)
 
-  const apiURL = process.env.NODE_ENV ? 'http://localhost:5000/api/units' : "https://sc2-meleee.herokuapp.com/";
+  const apiURL = process.env.NODE_ENV ==="development"? 'http://localhost:5000/' : "https://sc2-meleee.herokuapp.com/";
+  console.log('apiURL', apiURL)
 
   React.useEffect(() => {
     setLocked(true)
     const getUnits = async () =>{
       if(locked) {return []}
-        fetch(apiURL)
+      const URL =apiURL + 'api/units';
+      console.log('URL', URL)
+        fetch(URL)
           .then(res => res.json())
           .then(res =>  {
             setResponse(res.units)

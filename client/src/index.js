@@ -26,7 +26,7 @@ ReactDOM.render(
       <div className={"main-title"}>
         <div className={"title"}><a href = "/">SC2 Monobattle Calculator</a></div>
           <div></div>
-          <div><a href="/purpose">Purpose</a></div>
+          <div></div>
       </div>
       
       <BrowserRouter>
