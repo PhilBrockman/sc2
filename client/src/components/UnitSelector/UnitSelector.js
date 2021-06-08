@@ -137,20 +137,24 @@ const FactionFlipper = ({ showFactions}) => {
   }
 }
 
-export const UnitSelector = (props) => {
-  const [setUnit, currentUnit, units, showTags] = [props.setUnit, props.currentUnit, props.units, props.showTags]
 
-  const [tags, setTags] = React.useState([])
-  const [showFactions, setShowFactions] = React.useState(false)
-  const [searchText, setSearchText] = React.useState("")
-  const inputText = <input className={"unit-search"} type={"search"} placeholder={"...unit name"} onChange={(e) => setSearchText(e.target.value)} value={searchText}/>
+const InputText = ({searchText, setSearchText}) => {
+  return <input key={"inputter"} className={"unit-search"} 
+  type={"search"} placeholder={"... unit name"} 
+  onChange={(e) => setSearchText(e.target.value)} value={searchText}/>
+}
 
-
-  const randomElement = (arr) => {
-    return arr[Math.floor(Math.random()*arr.length)]
+const InputArea = ({units, currentUnit, setUnit, setSearchText, searchText, tags, setTags, showTags}) => {
+  const Tag = ({tag, highlight}) => {
+    const cns = ["tagged-attribute"]
+    cns.push(highlight && tags.includes(tag) ? "used-tag" : "")
+    return <div className={cns.join(" ")} key={tag} onClick={() => toggleTagging(tag)}>{tag}</div>;
   }
   
   const randomizeUnit = () => {
+    const randomElement = (arr) => {
+      return arr[Math.floor(Math.random()*arr.length)]
+    }
     setUnit(randomElement(units))
   }
 
@@ -162,30 +166,35 @@ export const UnitSelector = (props) => {
     }
   }
 
-  const Tag = ({tag, highlight}) => {
-    const cns = ["tagged-attribute"]
-    cns.push(highlight && tags.includes(tag) ? "used-tag" : "")
-    return <div className={cns.join(" ")} key={tag} onClick={() => toggleTagging(tag)}>{tag}</div>;
-  }
-
-  const inputArea = <div>
-    <div className={"input-area"}>{inputText} <ButtonGroup display={units} unit={currentUnit} setUnit={setUnit} randomizeUnit={randomizeUnit}/></div>
+  return <div>
+    <div className={"input-area"}>
+      <InputText setSearchText={setSearchText} searchText={searchText}/>
+      <ButtonGroup display={units} unit={currentUnit} setUnit={setUnit} randomizeUnit={randomizeUnit} />
+    </div>
     <div className={"row search-by-tag"}>
       {tags.map(tag => <Tag key={tag} tag={tag} toggle={toggleTagging} />)}
       {tags.length > 0 ? <h1 className={"clear-tags"} onClick={() => setTags([])}>🚫</h1> : null}
       </div>
     <div>
       <Unit unit={currentUnit} setUnit={setUnit}>
-         <div className={"attributes"}>
+        <div className={"attributes"}>
             {showTags && currentUnit?.types.map((( tag, index ) => {
                 return <Tag key={tag} tag={tag} toggle={toggleTagging} highlight={true}/>
               }))}
             </div>
       </Unit>
-      {props.children}
     </div>
   </div>
+}
 
+export const UnitSelector = (props) => {
+  const [setUnit, currentUnit, units, showTags] = [props.setUnit, props.currentUnit, props.units, props.showTags]
+
+  const [tags, setTags] = React.useState([])
+  const [showFactions, setShowFactions] = React.useState(false)
+  const [searchText, setSearchText] = React.useState("")
+
+  let  followup; 
   if(units){
     const reset = <div className={"button column"} onClick={() => {setTags([]); setSearchText("")}}><div> Clear filters</div></div>;
 
@@ -199,15 +208,12 @@ export const UnitSelector = (props) => {
         })
         return !absent
       }).filter(unit => unit.name.toLowerCase().includes(searchText.toLowerCase()))
-      return <>
-      <>{inputArea}</>
-        
+      followup =  <>        
         {showUnits(subUnits, currentUnit, setUnit).length >0 ? <><h1 style={{fontSize: "2em"}}>Filtered Results:</h1>{showUnits(subUnits, currentUnit, setUnit)} </>: <></>}
         {reset}
       </>
     } else {
-      return <>
-        {inputArea}
+      followup = <>
         <div onClick={() => setShowFactions(!showFactions)} className={"selector"} style={{textAlign:"center", fontSize:"1.5em"}}><FactionFlipper showFactions={showFactions}/></div>
           {showFactions ? 
               Object.entries(factions).map( ([key, value]) => {
@@ -220,6 +226,14 @@ export const UnitSelector = (props) => {
           }
       </>
     }
+    return <>
+      <InputArea showTags={showTags}
+        units={units} currentUnit={currentUnit} setUnit={setUnit}
+        setSearchText={setSearchText} searchText={searchText}
+        tags={tags} setTags={setTags} />
+        {props.children}
+      {followup}
+    </>
   } else {
     return "Loading"
   }
