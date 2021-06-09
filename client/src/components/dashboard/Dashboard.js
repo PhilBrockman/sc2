@@ -8,8 +8,13 @@ export const Dashboard = () => {
     toolId: "ldnoak"
   });
 
+  const LoginForm = Userfront.build({
+    toolId: "klmral"
+  });
+
   return(
     <>
+      <LoginForm />
       <h2>Dashboard</h2>
       <SignupForm />
     </>

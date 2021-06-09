@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import {Dashboard} from "./components/dashboard/Dashboard"
+import {EditUnits} from "./components/dashboard/EditUnits"
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 const Purpose = () => <div className="App">
@@ -33,6 +34,9 @@ ReactDOM.render(
         <Switch>
           <Route path="/dash">
             <Dashboard />
+          </Route>
+          <Route path="/dashboard">
+            <EditUnits />
           </Route>
           <Route path="/purpose">
             <Purpose />
