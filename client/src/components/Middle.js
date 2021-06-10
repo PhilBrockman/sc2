@@ -254,23 +254,22 @@ const Loading = () => {
   const imgs = ["/marine.png", "/zergling.png", "/zealot.png"]
 
   const IMG = ({src, delay}) => {
-    return <img src = {src } className={"loadingicon"} />
+    return <img src = {src } alt={src} className={"loadingicon"} />
   }
 
-  setTimeout(() => {
-    setShowImgs((showImgs + 1) % imgs.length)
-  }, 1250)
+  React.useEffect(() => {
+    let playing = true
+    setTimeout(() => {
+      if(playing){ setShowImgs((showImgs + 1) % imgs.length) }
+    }, 1250)
 
-  // setInterval(() => {
-  //   console.log('showImgs', showImgs)
-  //   setShowImgs([...showImgs, imgs[Math.floor(Math.random()*imgs.length)]])
-  // }, 2500)
+    return () => playing = false
+  })
   
   return <>
   <div className={"pulse"}>Heroku Dynos are spinning up...</div>
   <IMG src={imgs[showImgs]} />
   </>
-  // "Note:  Free tier!";
 }
 
 export const Middle = ({attacker, defender, research, setDefender, setAttacker, units, large}) => {

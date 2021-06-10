@@ -13,7 +13,7 @@ const UpdateAttribute = ({updateFunction, label, attributeValue, clicks}) => {
     } else{
       setDirty(false)
     }
-  }, [value])
+  }, [value, attributeValue, setDirty])
 
   React.useEffect(() => {
     if(clicks > 0){
@@ -22,7 +22,7 @@ const UpdateAttribute = ({updateFunction, label, attributeValue, clicks}) => {
         setDirty(false)
       }
     }
-  }, [clicks])
+  }, [clicks, dirty, value, updateFunction, attributeValue])
 
   const style= {
     backgroundColor: dirty? "rgba(255,0,0, .2)" : "rgba(0,255,0, .1)",
@@ -204,7 +204,7 @@ const EditUnit = ({og_unit}) => {
         </div>
         <div>
           <h2>Image</h2>
-          <UpdateAttribute label={<img src={unit.img} style={{maxWidth: "150px"}}/>}
+          <UpdateAttribute label={<img src={unit.img} alt={unit.name} style={{maxWidth: "150px"}}/>}
                 attributeValue={unit.img} 
                 updateFunction={(val) => 
                     updateUnit( {"img" : (val)} )}
