@@ -8,6 +8,7 @@ const factions = {
   terran: {
     icon: "/marine.png",
     production: {
+      commandcenter: "/commandcenter.png",
       barracks: "/barracks.png",
       factory: "/factory.png",
       starport: "/starport.png",
@@ -16,13 +17,18 @@ const factions = {
   zerg: {
     icon: "/zergling.png",
     production: {
-
+      hatchery: "/hatchery.png",
+      lair: "/lair.png",
+      hive: "/hive.png"
     }
   },
   protoss: {
     icon: "/zealot.png",
     production: {
-      roboticsFacility: "/robo.png"
+      nexus: "/nexus.png",
+      gateway: "/gateway.png",
+      roboticsFacility: "/robo.png",
+      stargate: "/stargate.png"
     }
   }
 }

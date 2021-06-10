@@ -1,4 +1,21 @@
 .update-attributes {
   display: flex;
   flex-direction: row;
+  margin: .5em
+}
+
+.edit-unit{
+  margin: 1em;
+  padding: 1em;
+  border: .125em solid black;
+  justify-content: space-around;
+}
+
+.attr {
+  padding: .125em 1em;
+  margin: .125em 1em;
+}
+
+.update-button {
+  padding: .125em 2em; 
 }

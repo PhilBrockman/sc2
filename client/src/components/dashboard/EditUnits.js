@@ -28,11 +28,12 @@ const UpdateAttribute = ({updateFunction, label, attributeValue, clicks}) => {
     backgroundColor: dirty? "rgba(255,0,0, .2)" : "rgba(0,255,0, .1)",
   }
   
-  return <div className={"row"}>
+  return <div className={"row attr"}>
     <div>{label}</div>
     <input style={style} type="text" onChange={(e) => setValue(e.target.value)} value={value || ""} />
   </div>
 }
+
 const assign = (property, value) => {
   const newObject = {};
   newObject[property] = value;
@@ -42,17 +43,17 @@ const assign = (property, value) => {
 const UpdateBonus = ({bonus, prefix ,updateFunction, clicks}) => {
   return <>
   <UpdateAttribute label={"To"} 
-        attributeValue={bonus.to} 
+        attributeValue={bonus?.to} 
         updateFunction={(val) => 
             updateFunction( assign(prefix+"to", (val)))}
         clicks={clicks} />
   <UpdateAttribute label={"Research Bonus"} 
-        attributeValue={bonus.researchBonus} 
+        attributeValue={bonus?.researchBonus} 
         updateFunction={(val) => 
             updateFunction( assign(prefix+"researchBonus", parseInt(val)))}
         clicks={clicks} />
   <UpdateAttribute label={"Base Damage"} 
-        attributeValue={bonus.baseDamage} 
+        attributeValue={bonus?.baseDamage} 
         updateFunction={(val) => 
             updateFunction( assign(prefix+"baseDamage", parseInt(val)))}
         clicks={clicks} />
@@ -85,25 +86,41 @@ const EditAttack = ({attack, updateFunction, id, clicks}) => {
           updateFunction={(val) => 
               updateFunction( assign("attacks."+id+".repeats", parseInt(val)))}
           clicks={clicks} />
+
+       <div>
+          <button onClick={() => updateFunction(assign("attacks."+id+".bonuses", {baseDamage: 1}), "$push")}>Add Bonus</button>
+      </div>
     </div>
     {attack.bonuses.length > 0 ?<div>
     
     <h4>Bonuses</h4>
+    <div>
+      {JSON.stringify(attack.bonuses)}
     {attack.bonuses.map((bonus, bid) => {
-      return <div key={bid}>
+      const prefix = ["attacks", id, "bonuses", bid, ""].join(".");
+      // console.log('assign(prefix+"to", bonus?.to)', assign(prefix+"to", bonus?.to))
+      return <div key={bid} className={"row"}><div>
         <UpdateBonus bonus = {bonus} 
-        prefix={["attacks", id, "bonuses", bid, ""].join(".")}
+        prefix={prefix}
         updateFunction={updateFunction}
         clicks={clicks}/>
+        </div>
+        <div>
+        <button onClick={() => {
+            updateFunction(assign(["attacks", id, "bonuses", bid].join("."),  1  ),  "$unset")
+              .then(() => {
+                console.log("inner funciton")
+                updateFunction(assign(["attacks", id, "bonuses"].join(".")     , null),  "$pull" )})
+            }}>Remove Bonus</button>
+        </div>
       </div>
 
     }
-    ) } </div>: null }    
+    ) }</div> </div>: null }    
   </div>
 }
 
 const EditArray = ({label, arr, prefix, updateFunction, clicks}) => {
-  console.log('prefix', prefix)
   const elements = arr.map((item, id) => {
     return <div key={id} className={"row"}>
       <div>
@@ -127,11 +144,11 @@ const EditArray = ({label, arr, prefix, updateFunction, clicks}) => {
   </>
 }
 
-const EditUnit = ({unit}) => {
-  const [response, setResponse] = React.useState(null)
+const EditUnit = ({og_unit}) => {
+  const [unit, setUnit] = React.useState(og_unit)
   const [updates, setUpdates] = React.useState(0)
 
-  const updateUnit = (attribute, operation="$set") => {
+  const  updateUnit = async (attribute, operation="$set") => {
     const url = "http://localhost:5000/api/update/" + unit._id
 
     fetch(url, {
@@ -146,17 +163,18 @@ const EditUnit = ({unit}) => {
         operation: operation,
         attribute: attribute
       }),
-    }).then(data => {
-      data.json()
-      console.log('data', data)
-      setResponse(data)
+    }).then(data => data.json())
+    .then(data => {
+      setUnit(data.unit.value)
+    }, error => {
+      console.log("Error!")
     })
   }
-  
+
   return <>
-  <div className={"update-attributes"}>
+  <div className={"row edit-unit"}>
     <div>
-        <h2>{unit.name}</h2>
+    <button className={"update-button"} onClick={() => setUpdates(updates+1)}><h2>{unit.name}</h2></button>
           <UpdateAttribute label={"Builds at: "} 
                 attributeValue={unit.structure} 
                 updateFunction={(val) => 
@@ -184,6 +202,14 @@ const EditUnit = ({unit}) => {
                 clicks={updates} />
             : null}
         </div>
+        <div>
+          <h2>Image</h2>
+          <UpdateAttribute label={<img src={unit.img} style={{maxWidth: "150px"}}/>}
+                attributeValue={unit.img} 
+                updateFunction={(val) => 
+                    updateUnit( {"img" : (val)} )}
+              clicks={updates} />
+        </div>
     </div>
     <div>
         <h2>Attacks</h2>
@@ -194,7 +220,7 @@ const EditUnit = ({unit}) => {
                 clicks={updates}
                 updateFunction={updateUnit}/>
           </div>)}
-        <button onClick={() => setUpdates(updates+1)}>Update Responses</button>
+        
     </div>
   </div>
   </>
@@ -202,11 +228,21 @@ const EditUnit = ({unit}) => {
 
 export const EditUnits = () => {
   const [locked, units] = useUnits()
+  console.log("I'm rerunning the call")
 
   return <>
   <div className={"container"}>
     {!locked ? <>wating for units to load </> : 
-      units?.filter(unit => unit.name === "Siege Tank").map(unit => <div key={unit._id}> <EditUnit unit={unit}/> </div>)
+      units?.sort((a, b) => {
+        var nameA = a.name.toUpperCase();
+        var nameB = b.name.toUpperCase();
+        if(nameA < nameB){
+          return -1;
+        } if (nameA > nameB){
+          return 1;
+        } 
+        return 0;
+      }).map(unit => <div key={unit._id}> <EditUnit og_unit={unit}/> </div>)
     }
   </div>
   </>

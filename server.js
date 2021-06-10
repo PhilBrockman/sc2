@@ -54,9 +54,12 @@ MongoClient.connect(url)
       console.log("I'm updating, here's my data: ")
       console.log('req.operation', req.body.operation)
       console.log('req.body.', req.body.attribute)
-      units.findOneAndUpdate({_id: new ObjectID(req.params.id)}, assign(req.body.operation, req.body.attribute))
+      units.findOneAndUpdate({_id: new ObjectID(req.params.id)}, assign(req.body.operation, req.body.attribute), {returnOriginal: false})
         .then(results => {
-          res.send({"foo": "bar", "cen": results})
+          // console.log("result:", results.value.attacks[0].bonuses)
+          res.send({unit: results, foo: "bar"})
+        }).catch(err =>{
+          console.error('err', err)
         })
       
     })
