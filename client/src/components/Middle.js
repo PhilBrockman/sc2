@@ -249,11 +249,34 @@ const AllUpgrades = ({attacker, defender, attackResearch, setAttackResearch, shi
     </>
     }
 
+const Loading = () => {
+  const [showImgs, setShowImgs] = React.useState(0)
+  const imgs = ["/marine.png", "/zergling.png", "/zealot.png"]
+
+  const IMG = ({src, delay}) => {
+    return <img src = {src } className={"loadingicon"} />
+  }
+
+  setTimeout(() => {
+    setShowImgs((showImgs + 1) % imgs.length)
+  }, 1250)
+
+  // setInterval(() => {
+  //   console.log('showImgs', showImgs)
+  //   setShowImgs([...showImgs, imgs[Math.floor(Math.random()*imgs.length)]])
+  // }, 2500)
+  
+  return <>
+  <div className={"pulse"}>Heroku Dynos are spinning up...</div>
+  <IMG src={imgs[showImgs]} />
+  </>
+  // "Note:  Free tier!";
+}
 
 export const Middle = ({attacker, defender, research, setDefender, setAttacker, units, large}) => {
-
   if(!research || !units){
-    return units ?  "no research (error)":  "Note: Heroku Dynos are spinning up... Sorry for the inconevience. Please wait!";
+    return units ?  "no research (error)":  
+    <Loading ></Loading>
   } else {
     const [attackResearch, setAttackResearch, shieldsResearch, setShieldsResearch, armorResearch, setArmorResearch] = research
     

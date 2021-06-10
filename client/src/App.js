@@ -85,6 +85,8 @@ function App() {
     selectAttack(attacker)
   }, [attacker, defender, units, autoSelected])
 
+  
+
   const large = width > 950;
 
   const ainfo = <div className={"container"}>
@@ -121,11 +123,11 @@ function App() {
                   </div> 
                 </div>;
 
-          // 
     return (
       <div className="App">
         
-          {large ? <div className={"arena"}>{ainfo} {middle} {dinfo} </div>: <>{middle} <div className={"arena"}>{ainfo} {dinfo} </div></>}
+          {large ? <div className={"arena"}>{ainfo} {middle} {dinfo} </div>: 
+          <>{middle} <div className={"arena"}>{ainfo} {dinfo} </div></>}
           
         
       </div>

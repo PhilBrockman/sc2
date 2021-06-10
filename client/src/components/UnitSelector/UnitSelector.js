@@ -8,7 +8,7 @@ const factions = {
   terran: {
     icon: "/marine.png",
     production: {
-      commandcenter: "/commandcenter.png",
+      commandCenter: "/commandcenter.png",
       barracks: "/barracks.png",
       factory: "/factory.png",
       starport: "/starport.png",
@@ -19,7 +19,7 @@ const factions = {
     production: {
       hatchery: "/hatchery.png",
       lair: "/lair.png",
-      hive: "/hive.png"
+      // hive: "/hive.png"
     }
   },
   protoss: {
