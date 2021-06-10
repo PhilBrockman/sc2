@@ -168,8 +168,8 @@ oneShot = (faked=true) => {
           def.base.shields -= damage
           log = `${damage} to shields. (${def.base.shields} remaining)`
         } else {
-          def.base.shields = 0;
           def.base.health -= damage - def.base.shields;
+          def.base.shields = 0;
           log = `${damage} has overloaded shields. (${def.base.health} health remaining)`
         }
       } else {

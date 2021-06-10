@@ -143,7 +143,6 @@ const FactionFlipper = ({ showFactions}) => {
   }
 }
 
-
 const InputText = ({searchText, setSearchText}) => {
   return <input key={"inputter"} className={"unit-search"} 
   type={"search"} placeholder={"... unit name"} 
@@ -171,7 +170,6 @@ const InputArea = ({units, currentUnit, setUnit, setSearchText, searchText, tags
       setTags([...tags, type])
     }
   }
-
   return <div>
     <div className={"input-area"}>
       <InputText setSearchText={setSearchText} searchText={searchText}/>
@@ -187,6 +185,16 @@ const InputArea = ({units, currentUnit, setUnit, setSearchText, searchText, tags
             {showTags && currentUnit?.types.map((( tag, index ) => {
                 return <Tag key={tag} tag={tag} toggle={toggleTagging} highlight={true}/>
               }))}
+
+              {showTags && currentUnit?
+                !currentUnit.types.includes("Air") ? 
+                  <button onClick={() => setUnit({...currentUnit, types:[...currentUnit.types, "Air"]})}>Take to the Air</button> :
+                  !currentUnit.types.includes("Ground") ? 
+                    <button onClick={() => setUnit({...currentUnit, types:[...currentUnit.types, "Ground"]})}>Bind to the Ground</button> :
+                     null
+                : null
+              }
+              
             </div>
       </Unit>
     </div>

@@ -85,7 +85,7 @@ const DPS = ({attacker, defender,  attackResearch, shieldsResearch, armorResearc
     let newValues = d.oneShot();
     let newDefender = defender;
     if(newValues && attacker.weapon){
-      for(var i = 0; i < attacker.weapon.repeats; i++){
+      for(var i = 0; i < 1; i++){
 
           let newValues = d.oneShot();
           if(newValues){
@@ -146,6 +146,7 @@ const DPS = ({attacker, defender,  attackResearch, shieldsResearch, armorResearc
 
 const Vitality = ({defender, units, setDefender, shieldResearch, armorResearch}) => {
   const base = units?.find(unit => defender?.name === unit.name)?.base
+  const baseTypes = units?.find(unit => defender?.name === unit.name)?.types
   const health = defender?.base.health/base?.health
 
   const healthColor = health > 6/7 ? "green" :
@@ -205,7 +206,7 @@ const Vitality = ({defender, units, setDefender, shieldResearch, armorResearch})
             </div>
             <div className={"row"}><div>{defender.base.armor+defender.research.armor*armorResearch} 🛡</div>= <UpdateAttr val={defender.base.armor} updater={setAttribute} attr={"armor"}/> + <>{armorResearchImg}</></div>
             <div style={{ textAlign:"right"}}>
-          { (defender.base !== base ) ? 
+          { (defender.base !== base || defender.types !== baseTypes) ? 
               <span onClick={() => setDefender(units?.find(unit => defender?.name === unit.name))}>Reset</span> : null}
               </div>
         </div>}/>
